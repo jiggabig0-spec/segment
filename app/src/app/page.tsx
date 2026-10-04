@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { formatAmount } from "@/lib/amounts";
+import { DEMO, DEMO_PARTIALS, DEMO_SERIES } from "@/lib/demo";
 import { errorMessage } from "@/lib/errors";
 import { fetchAllSeries, fetchPartials, type PartialInfo, type SeriesInfo } from "@/lib/segments";
 import { useProgram } from "@/lib/useSegments";
@@ -18,6 +19,10 @@ export default function Home() {
 
   useEffect(() => {
     let live = true;
+    if (DEMO) {
+      setRows([{ series: DEMO_SERIES, partials: DEMO_PARTIALS }]);
+      return;
+    }
     (async () => {
       try {
         const all = (await fetchAllSeries(program)).filter((s) => s.finalized);

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "build:demo": "NEXT_PUBLIC_DEMO=1 STATIC_EXPORT=1 next build"
   },
   "dependencies": {
     "@anchor-lang/core": "^1.2.0",

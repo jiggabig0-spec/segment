@@ -4,6 +4,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useState } from "react";
 import { formatAmount, mintPreview, parseAmount, redeemPreview } from "@/lib/amounts";
 import { RPC_URL } from "@/lib/config";
+import { DEMO, demoMint, demoRedeem } from "@/lib/demo";
 import { errorMessage } from "@/lib/errors";
 import {
   explorerUrl,
@@ -47,10 +48,23 @@ export function MintRedeem({
         : { pay: amount, get: redeemPreview(amount, series.redeemFeeBps).withdrawn, fee: redeemPreview(amount, series.redeemFeeBps).fee }
       : null;
   const blocked = mode === "mint" && series.mintPaused;
-  const canSubmit = !!publicKey && !!preview && preview.get > BigInt(0) && !tooMuch && !busy && !blocked;
+  const canSubmit = (DEMO || !!publicKey) && !!preview && preview.get > BigInt(0) && !tooMuch && !busy && !blocked;
 
   async function submit() {
-    if (!publicKey || !amount) return;
+    if (!amount) return;
+    if (DEMO) {
+      try {
+        if (mode === "mint") demoMint(amount);
+        else demoRedeem(amount);
+        setStatus({ kind: "ok", text: `${mode === "mint" ? "Minted" : "Redeemed"} (demo, nothing was sent).` });
+        setInput("");
+        onDone();
+      } catch (e) {
+        setStatus({ kind: "error", text: errorMessage(e) });
+      }
+      return;
+    }
+    if (!publicKey) return;
     setBusy(true);
     setStatus(null);
     try {
@@ -130,7 +144,7 @@ export function MintRedeem({
         </dl>
       )}
 
-      {publicKey ? (
+      {DEMO || publicKey ? (
         <button className="primary" disabled={!canSubmit} onClick={submit}>
           {busy ? "Confirm in your wallet…" : mode === "mint" ? "Mint" : "Redeem"}
         </button>
@@ -149,7 +163,7 @@ export function MintRedeem({
         </p>
       )}
 
-      {mode === "mint" && (
+      {mode === "mint" && !DEMO && (
         <p className="muted small">
           Don&apos;t have the stock token?{" "}
           <a href={tradeUrl(series.underlyingMint)} target="_blank" rel="noreferrer">

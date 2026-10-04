@@ -11,6 +11,16 @@ npm test                     # amount math and error messages
 npm run build
 ```
 
+## Demo mode
+
+`NEXT_PUBLIC_DEMO=1` runs the site on built-in Alphabet data (7 segments, Waymo included) with a
+pretend wallet holding 10 GOOGLx, so it can be shown before the program is deployed. Nothing
+touches the chain, and the Trade buttons are disabled.
+
+```sh
+npm run build:demo           # static site in out/, host it anywhere
+```
+
 Wallets that support the Wallet Standard (Phantom, Solflare, Backpack and most others) show up
 automatically.
 

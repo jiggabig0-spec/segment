@@ -4,6 +4,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatAmount, formatBps } from "@/lib/amounts";
+import { DEMO, DEMO_PARTIALS, DEMO_SERIES, demoBalances } from "@/lib/demo";
 import { errorMessage } from "@/lib/errors";
 import { fetchBalances, fetchPartials, fetchSeries, tradeUrl, type PartialInfo, type SeriesInfo } from "@/lib/segments";
 import { useProgram } from "@/lib/useSegments";
@@ -30,6 +31,12 @@ export function SeriesView({ address }: { address: string }) {
 
   const refresh = useCallback(async () => {
     if (!key) return;
+    if (DEMO) {
+      setSeries({ ...DEMO_SERIES });
+      setPartials(DEMO_PARTIALS);
+      setBalances(demoBalances());
+      return;
+    }
     try {
       const s = await fetchSeries(program, key);
       setSeries(s);
@@ -54,7 +61,7 @@ export function SeriesView({ address }: { address: string }) {
       <section className="series-head">
         <h1>Series {series.seriesId}</h1>
         <p className="muted">
-          Underlying stock token <code>{series.underlyingMint.toBase58()}</code>
+          Underlying stock token {DEMO ? <strong>GOOGLx</strong> : <code>{series.underlyingMint.toBase58()}</code>}
           {series.metadataUri && (
             <>
               {" · "}
@@ -102,9 +109,15 @@ export function SeriesView({ address }: { address: string }) {
                   <td className="num">{formatBps(p.weightBps)}</td>
                   {balances && <td className="num">{formatAmount(balances.partials[p.index], d, 4)}</td>}
                   <td className="num">
-                    <a href={tradeUrl(p.mint)} target="_blank" rel="noreferrer" className="link-button">
-                      Trade
-                    </a>
+                    {DEMO ? (
+                      <span className="link-button disabled" title="Trading opens once pools exist">
+                        Trade
+                      </span>
+                    ) : (
+                      <a href={tradeUrl(p.mint)} target="_blank" rel="noreferrer" className="link-button">
+                        Trade
+                      </a>
+                    )}
                   </td>
                 </tr>
               ))}

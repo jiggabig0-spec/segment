@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Providers } from "@/components/Providers";
 import { WalletButton } from "@/components/WalletButton";
 import { NETWORK_LABEL } from "@/lib/config";
+import { DEMO } from "@/lib/demo";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,10 +21,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <Link href="/" className="brand">
               Segments
             </Link>
-            <span className="badge">{NETWORK_LABEL}</span>
+            <span className="badge">{DEMO ? "Demo" : NETWORK_LABEL}</span>
             <div className="spacer" />
             <WalletButton />
           </header>
+          {DEMO && (
+            <div className="demo-banner">
+              Demo: built-in Alphabet data and a pretend wallet holding 10 GOOGLx. Nothing touches the blockchain.
+            </div>
+          )}
           <main className="main">{children}</main>
           <footer className="footer">
             Segment tokens are experimental and unaudited. Not available to US persons or in restricted
