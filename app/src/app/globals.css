@@ -1,0 +1,96 @@
+:root {
+  --bg: #fbfaf8;
+  --surface: #ffffff;
+  --text: #17171a;
+  --muted: #6b6b75;
+  --border: #e6e4df;
+  --accent: #e26a2c;
+  --accent-text: #ffffff;
+  --ok: #1f8a4c;
+  --error: #c0392b;
+  --notice-bg: #fff4e5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111114;
+    --surface: #1a1a1f;
+    --text: #f1f0ee;
+    --muted: #9b9ba6;
+    --border: #2c2c33;
+    --accent: #f08a4b;
+    --accent-text: #111114;
+    --ok: #4cc27f;
+    --error: #ff7b6b;
+    --notice-bg: #2b2117;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+a { color: var(--accent); }
+code { font-size: 0.85em; word-break: break-all; }
+
+.header { display: flex; align-items: center; gap: 12px; padding: 12px 24px; border-bottom: 1px solid var(--border); }
+.brand { font-weight: 700; font-size: 18px; color: var(--text); text-decoration: none; }
+.badge { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--notice-bg); color: var(--accent); }
+.spacer { flex: 1; }
+.main { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
+.footer { max-width: 1040px; margin: 0 auto; padding: 24px 16px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); }
+
+.hero h1 { font-size: 32px; margin: 0 0 8px; }
+.hero p { color: var(--muted); max-width: 640px; margin: 0 0 32px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.card { display: block; padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); text-decoration: none; }
+.card:hover { border-color: var(--accent); }
+.card h2 { margin: 0 0 12px; font-size: 18px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.chip { font-size: 12px; font-weight: 600; padding: 2px 8px; border: 1px solid var(--border); border-radius: 6px; }
+
+.series-head h1 { margin: 0 0 4px; }
+.stats { display: flex; flex-wrap: wrap; gap: 24px; margin: 20px 0; }
+.stat-value { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.notice { background: var(--notice-bg); padding: 10px 14px; border-radius: 8px; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 20px; align-items: start; }
+@media (max-width: 800px) { .layout { grid-template-columns: 1fr; } }
+.panel { padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.panel h2 { margin: 0 0 12px; font-size: 17px; }
+
+.table { width: 100%; border-collapse: collapse; }
+.table th { text-align: left; font-weight: 500; color: var(--muted); font-size: 13px; padding: 6px 4px; border-bottom: 1px solid var(--border); }
+.table td { padding: 10px 4px; border-bottom: 1px solid var(--border); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.link-button { font-size: 13px; padding: 4px 10px; border: 1px solid var(--border); border-radius: 6px; text-decoration: none; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 8px; }
+.tab { flex: 1; padding: 8px; border: 1px solid var(--border); background: transparent; color: var(--muted); border-radius: 8px; cursor: pointer; font: inherit; }
+.tab.active { color: var(--text); border-color: var(--accent); font-weight: 600; }
+.field { display: grid; gap: 6px; margin: 12px 0 6px; }
+.field span { font-size: 13px; color: var(--muted); }
+.field input { padding: 10px 12px; font: inherit; font-size: 18px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); }
+.row { display: flex; justify-content: space-between; align-items: center; }
+.link { background: none; border: none; color: var(--accent); cursor: pointer; font: inherit; padding: 0; }
+.preview { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin: 16px 0; font-variant-numeric: tabular-nums; }
+.preview dt { color: var(--muted); }
+.preview dd { margin: 0; text-align: right; font-weight: 600; }
+.primary { width: 100%; padding: 12px; border: none; border-radius: 8px; background: var(--accent); color: var(--accent-text); font: inherit; font-weight: 600; cursor: pointer; margin-top: 8px; }
+.primary:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.error { color: var(--error); }
+.ok { color: var(--ok); }
+
+/* Wallet adapter button, in the app's colours and never wrapping. */
+.wallet-adapter-button-trigger { background: var(--accent); color: var(--accent-text); white-space: nowrap; }
+.wallet-adapter-button { height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; border-radius: 8px; }
+@media (max-width: 600px) {
+  .header { padding: 12px 16px; }
+}

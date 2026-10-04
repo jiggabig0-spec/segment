@@ -50,6 +50,19 @@ tests against the compiled `.so` with LiteSVM and drop the patch.
 To deploy you need the Solana CLI and Anchor CLI, then `anchor keys sync` to replace the
 placeholder program id with your own keypair's.
 
+## Web app
+
+`app/` is the Next.js front end: series list, mint and redeem, balances, and trade links. See
+`app/README.md`.
+
+## IDL
+
+`idl/segments.json` (and its TypeScript type) is generated without the Anchor CLI:
+
+```sh
+python3 scripts/build_idl.py
+```
+
 ## Status
 
 Scaffold. Not audited. Do not deploy to mainnet.

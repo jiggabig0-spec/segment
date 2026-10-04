@@ -1,0 +1,1132 @@
+{
+  "address": "6PHe3DsZvs3JdYzELQSQ9hK6ReYqTYPc9rspXBKkf1rh",
+  "metadata": {
+    "name": "segments",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Split a tokenized stock into fixed segment tokens and back"
+  },
+  "instructions": [
+    {
+      "name": "init_config",
+      "discriminator": [
+        23,
+        235,
+        115,
+        232,
+        168,
+        96,
+        1,
+        231
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "program_data",
+          "docs": [
+            "Only the program's upgrade authority may initialise, so nobody can front-run the deploy."
+          ]
+        },
+        {
+          "name": "system_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "admin",
+          "type": "pubkey"
+        },
+        {
+          "name": "guardian",
+          "type": "pubkey"
+        },
+        {
+          "name": "treasury",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "propose_admin",
+      "discriminator": [
+        121,
+        214,
+        199,
+        212,
+        87,
+        39,
+        117,
+        234
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "new_admin",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "accept_admin",
+      "discriminator": [
+        112,
+        42,
+        45,
+        90,
+        116,
+        181,
+        13,
+        170
+      ],
+      "accounts": [
+        {
+          "name": "new_admin",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "set_guardian",
+      "discriminator": [
+        147,
+        243,
+        50,
+        121,
+        154,
+        164,
+        50,
+        30
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "guardian",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "set_treasury",
+      "discriminator": [
+        57,
+        97,
+        196,
+        95,
+        195,
+        206,
+        106,
+        136
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "treasury",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "create_series",
+      "discriminator": [
+        181,
+        9,
+        52,
+        120,
+        197,
+        221,
+        42,
+        142
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "underlying_mint"
+        },
+        {
+          "name": "series",
+          "writable": true
+        },
+        {
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "underlying_token_program"
+        },
+        {
+          "name": "system_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "series_id",
+          "type": "u16"
+        },
+        {
+          "name": "metadata_uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "add_partial",
+      "discriminator": [
+        60,
+        181,
+        8,
+        163,
+        232,
+        74,
+        63,
+        247
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "series",
+          "writable": true
+        },
+        {
+          "name": "partial_mint",
+          "docs": [
+            "Token-2022 mint whose mint authority is the series PDA forever, with no freeze",
+            "authority and no permanent delegate."
+          ],
+          "writable": true
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "system_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "weight_bps",
+          "type": "u16"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "name": "uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "finalize_series",
+      "discriminator": [
+        132,
+        16,
+        186,
+        46,
+        6,
+        76,
+        125,
+        188
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "series",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "set_series_uri",
+      "discriminator": [
+        47,
+        204,
+        156,
+        243,
+        138,
+        52,
+        159,
+        123
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "series",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "metadata_uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "schedule_fee",
+      "discriminator": [
+        67,
+        220,
+        176,
+        104,
+        30,
+        254,
+        14,
+        75
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "series",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "mint_fee_bps",
+          "type": "u16"
+        },
+        {
+          "name": "redeem_fee_bps",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "cancel_fee",
+      "discriminator": [
+        5,
+        77,
+        56,
+        64,
+        104,
+        252,
+        30,
+        22
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "series",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "apply_fee",
+      "discriminator": [
+        59,
+        156,
+        222,
+        176,
+        105,
+        28,
+        247,
+        64
+      ],
+      "accounts": [
+        {
+          "name": "series",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "set_mint_paused",
+      "discriminator": [
+        122,
+        112,
+        56,
+        49,
+        172,
+        101,
+        49,
+        228
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "series",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "paused",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "sweep_fees",
+      "discriminator": [
+        175,
+        225,
+        98,
+        71,
+        118,
+        66,
+        34,
+        148
+      ],
+      "accounts": [
+        {
+          "name": "config"
+        },
+        {
+          "name": "series",
+          "writable": true
+        },
+        {
+          "name": "underlying_mint"
+        },
+        {
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "treasury_account",
+          "writable": true
+        },
+        {
+          "name": "underlying_token_program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "mint_set",
+      "discriminator": [
+        91,
+        117,
+        1,
+        75,
+        201,
+        110,
+        110,
+        189
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "series",
+          "writable": true
+        },
+        {
+          "name": "underlying_mint"
+        },
+        {
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "user_underlying",
+          "writable": true
+        },
+        {
+          "name": "underlying_token_program"
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "redeem_set",
+      "discriminator": [
+        167,
+        80,
+        14,
+        7,
+        40,
+        75,
+        188,
+        216
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "series",
+          "writable": true
+        },
+        {
+          "name": "underlying_mint"
+        },
+        {
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "user_underlying",
+          "writable": true
+        },
+        {
+          "name": "underlying_token_program"
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "sets",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Config",
+      "discriminator": [
+        155,
+        12,
+        170,
+        224,
+        30,
+        250,
+        204,
+        130
+      ]
+    },
+    {
+      "name": "Series",
+      "discriminator": [
+        240,
+        97,
+        8,
+        183,
+        139,
+        77,
+        250,
+        162
+      ]
+    }
+  ],
+  "types": [
+    {
+      "name": "FeeApplied",
+      "type": {
+        "fields": [
+          {
+            "name": "series",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "redeem_fee_bps",
+            "type": "u16"
+          }
+        ],
+        "kind": "struct"
+      }
+    },
+    {
+      "name": "FeeScheduled",
+      "type": {
+        "fields": [
+          {
+            "name": "series",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "redeem_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "effective_at",
+            "type": "i64"
+          }
+        ],
+        "kind": "struct"
+      }
+    },
+    {
+      "name": "MintPauseChanged",
+      "type": {
+        "fields": [
+          {
+            "name": "series",
+            "type": "pubkey"
+          },
+          {
+            "name": "paused",
+            "type": "bool"
+          }
+        ],
+        "kind": "struct"
+      }
+    },
+    {
+      "name": "SeriesCreated",
+      "type": {
+        "fields": [
+          {
+            "name": "series",
+            "type": "pubkey"
+          },
+          {
+            "name": "underlying_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "series_id",
+            "type": "u16"
+          }
+        ],
+        "kind": "struct"
+      }
+    },
+    {
+      "name": "SeriesFinalized",
+      "type": {
+        "fields": [
+          {
+            "name": "series",
+            "type": "pubkey"
+          },
+          {
+            "name": "partial_mints",
+            "type": {
+              "vec": "pubkey"
+            }
+          }
+        ],
+        "kind": "struct"
+      }
+    },
+    {
+      "name": "SetMinted",
+      "type": {
+        "fields": [
+          {
+            "name": "series",
+            "type": "pubkey"
+          },
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "deposited",
+            "type": "u64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "sets",
+            "type": "u64"
+          }
+        ],
+        "kind": "struct"
+      }
+    },
+    {
+      "name": "SetRedeemed",
+      "type": {
+        "fields": [
+          {
+            "name": "series",
+            "type": "pubkey"
+          },
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "sets",
+            "type": "u64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "withdrawn",
+            "type": "u64"
+          }
+        ],
+        "kind": "struct"
+      }
+    },
+    {
+      "name": "Config",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "docs": [
+              "Creates series and schedules fees. Intended to be a Squads multisig."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "pending_admin",
+            "docs": [
+              "Set by `propose_admin`, takes over on `accept_admin`."
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "guardian",
+            "docs": [
+              "May pause and unpause minting. Has no power over redemption."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "docs": [
+              "Owner of the token accounts that receive swept fees."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PendingFee",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "mint_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "redeem_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "effective_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Series",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "underlying_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "underlying_token_program",
+            "type": "pubkey"
+          },
+          {
+            "name": "underlying_decimals",
+            "type": "u8"
+          },
+          {
+            "name": "vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "series_id",
+            "type": "u16"
+          },
+          {
+            "name": "partial_count",
+            "docs": [
+              "Number of partials. Fixed once `finalized` is true."
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "partial_mints",
+            "type": {
+              "array": [
+                "pubkey",
+                8
+              ]
+            }
+          },
+          {
+            "name": "weights_bps",
+            "docs": [
+              "Informational seed weights, sum to 10,000 once finalized. Not used in any math."
+            ],
+            "type": {
+              "array": [
+                "u16",
+                8
+              ]
+            }
+          },
+          {
+            "name": "finalized",
+            "docs": [
+              "Once true, the composition can never change. There is no instruction to unset it."
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "mint_paused",
+            "type": "bool"
+          },
+          {
+            "name": "mint_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "redeem_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "pending_fee",
+            "type": {
+              "option": {
+                "defined": {
+                  "name": "PendingFee"
+                }
+              }
+            }
+          },
+          {
+            "name": "outstanding_sets",
+            "docs": [
+              "Complete sets in circulation. Every partial's supply equals this."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "accrued_fees",
+            "docs": [
+              "Fees held in the vault, waiting for `sweep_fees`."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "metadata_uri",
+            "type": "string"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "vault_bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "FeeTooHigh",
+      "msg": "Fee exceeds the hard cap"
+    },
+    {
+      "code": 6001,
+      "name": "NoPendingFee",
+      "msg": "No fee change is pending"
+    },
+    {
+      "code": 6002,
+      "name": "FeeTimelockActive",
+      "msg": "The fee timelock has not elapsed"
+    },
+    {
+      "code": 6003,
+      "name": "SeriesFinalized",
+      "msg": "Series is already finalized and cannot be changed"
+    },
+    {
+      "code": 6004,
+      "name": "SeriesNotFinalized",
+      "msg": "Series is not finalized yet"
+    },
+    {
+      "code": 6005,
+      "name": "TooManyPartials",
+      "msg": "Series has too many partials"
+    },
+    {
+      "code": 6006,
+      "name": "TooFewPartials",
+      "msg": "Series needs at least two partials"
+    },
+    {
+      "code": 6007,
+      "name": "BadPartialIndex",
+      "msg": "Partial index must equal the current partial count"
+    },
+    {
+      "code": 6008,
+      "name": "BadWeights",
+      "msg": "Partial weights must sum to 10,000 bps"
+    },
+    {
+      "code": 6009,
+      "name": "MintPaused",
+      "msg": "Minting is paused for this series"
+    },
+    {
+      "code": 6010,
+      "name": "ZeroAmount",
+      "msg": "Amount must be greater than zero"
+    },
+    {
+      "code": 6011,
+      "name": "AmountTooSmall",
+      "msg": "Amount is too small to cover the fee"
+    },
+    {
+      "code": 6012,
+      "name": "WrongPartialAccounts",
+      "msg": "Wrong number of partial accounts"
+    },
+    {
+      "code": 6013,
+      "name": "WrongPartialMint",
+      "msg": "Partial mint does not match the series"
+    },
+    {
+      "code": 6014,
+      "name": "WrongTokenAccount",
+      "msg": "Token account has the wrong mint or owner"
+    },
+    {
+      "code": 6015,
+      "name": "StringTooLong",
+      "msg": "String is too long"
+    },
+    {
+      "code": 6016,
+      "name": "Unauthorized",
+      "msg": "Signer is not allowed to do this"
+    },
+    {
+      "code": 6017,
+      "name": "NoPendingAdmin",
+      "msg": "No admin transfer is pending"
+    },
+    {
+      "code": 6018,
+      "name": "MathOverflow",
+      "msg": "Arithmetic overflow"
+    }
+  ],
+  "events": [
+    {
+      "discriminator": [
+        63,
+        184,
+        133,
+        92,
+        182,
+        245,
+        176,
+        37
+      ],
+      "name": "FeeApplied"
+    },
+    {
+      "discriminator": [
+        223,
+        34,
+        98,
+        103,
+        188,
+        154,
+        93,
+        109
+      ],
+      "name": "FeeScheduled"
+    },
+    {
+      "discriminator": [
+        176,
+        119,
+        42,
+        75,
+        95,
+        125,
+        169,
+        176
+      ],
+      "name": "MintPauseChanged"
+    },
+    {
+      "discriminator": [
+        2,
+        164,
+        54,
+        38,
+        24,
+        181,
+        233,
+        180
+      ],
+      "name": "SeriesCreated"
+    },
+    {
+      "discriminator": [
+        131,
+        204,
+        47,
+        197,
+        56,
+        43,
+        110,
+        179
+      ],
+      "name": "SeriesFinalized"
+    },
+    {
+      "discriminator": [
+        134,
+        220,
+        152,
+        208,
+        56,
+        170,
+        13,
+        171
+      ],
+      "name": "SetMinted"
+    },
+    {
+      "discriminator": [
+        174,
+        255,
+        0,
+        198,
+        105,
+        202,
+        76,
+        236
+      ],
+      "name": "SetRedeemed"
+    }
+  ]
+}
