@@ -1,0 +1,20 @@
+{
+  "_comment": "Draft definition of the first series. Weights are informational seed prices only and must be set by a written methodology before launch. Placeholder weights below mirror Daybreak's public GOOGLx S1 seeds for comparison.",
+  "series_id": 1,
+  "name": "Alphabet Series 1",
+  "underlying": {
+    "symbol": "GOOGLx",
+    "issuer": "xStocks (Backed / Kraken)",
+    "mint": "TODO: verify on-chain before use",
+    "token_program": "TODO: Token or Token-2022; check extensions (permanent delegate, pausable, scaled UI amount, transfer hook)"
+  },
+  "partials": [
+    { "symbol": "SRCH",  "name": "Alphabet Search",        "segment": "Google Search & other",                     "weight_bps": 5350 },
+    { "symbol": "GCP",   "name": "Alphabet Cloud",         "segment": "Google Cloud",                              "weight_bps": 2600 },
+    { "symbol": "YT",    "name": "Alphabet YouTube",       "segment": "YouTube ads",                               "weight_bps": 850 },
+    { "symbol": "SUBS",  "name": "Alphabet Subscriptions", "segment": "Google subscriptions, platforms & devices", "weight_bps": 500 },
+    { "symbol": "BETS",  "name": "Alphabet Other Bets",    "segment": "Other Bets (Waymo, Verily, Wing, Calico, etc.) & corporate", "weight_bps": 500 },
+    { "symbol": "NETW",  "name": "Alphabet Network",       "segment": "Google Network",                            "weight_bps": 200 }
+  ],
+  "fees": { "mint_bps": 10, "redeem_bps": 10, "cap_bps": 30 }
+}

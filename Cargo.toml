@@ -1,0 +1,13 @@
+[workspace]
+members = ["programs/*"]
+resolver = "2"
+
+[profile.release]
+overflow-checks = true
+lto = "fat"
+codegen-units = 1
+
+# Host-only patch so `cargo test` can run the program natively (see vendor/solana-invoke).
+# On-chain code paths are identical to upstream.
+[patch.crates-io]
+solana-invoke = { path = "vendor/solana-invoke" }
