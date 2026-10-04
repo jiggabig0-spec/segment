@@ -38,7 +38,7 @@ Upgrade authority, timelock and eventual immutability are deployment settings, n
 Requires Rust. Uses Anchor 1.2.
 
 ```sh
-cargo test          # 3 unit + 10 end-to-end tests
+cargo test          # 3 unit + 11 end-to-end tests
 ```
 
 Tests run the program natively inside `solana-program-test`, with the real Token-2022 and

@@ -731,3 +731,73 @@ async fn only_admin_creates_series_and_only_upgrade_authority_inits() {
     let ix = env.create_series_ix(&stranger.pubkey(), 7);
     assert!(env.send(&[ix], &[&stranger]).await.is_err());
 }
+
+/// The launch layout from `series/googl-s1.json`: seven partials, Waymo on its own.
+#[tokio::test]
+async fn alphabet_series_with_separate_waymo() {
+    const ALPHABET: [(&str, u16); 7] = [
+        ("SRCH", 5_350),
+        ("GCP", 2_600),
+        ("YT", 850),
+        ("SUBS", 500),
+        ("WAYMO", 400),
+        ("BETS", 100),
+        ("NETW", 200),
+    ];
+    let mut env = Env::new().await;
+    env.init_config().await;
+    let series = series_pda(&env.underlying, 1);
+    let admin = env.admin.insecure_clone();
+    let ix = env.create_series_ix(&admin.pubkey(), 1);
+    env.send(&[ix], &[&admin]).await.unwrap();
+    for (i, (symbol, weight)) in ALPHABET.iter().enumerate() {
+        let ix = env.add_partial_ix(&series, i as u8, *weight, symbol);
+        env.send(&[ix], &[&admin]).await.unwrap();
+    }
+    let ix = env.finalize_ix(&series);
+    env.send(&[ix], &[&admin]).await.unwrap();
+
+    let payer = env.ctx.payer.pubkey();
+    let ixs: Vec<_> = (0..7)
+        .map(|i| {
+            create_associated_token_account_idempotent(
+                &payer,
+                &env.user.pubkey(),
+                &partial_pda(&series, i),
+                &TOKEN_2022,
+            )
+        })
+        .collect();
+    env.send(&ixs, &[]).await.unwrap();
+
+    let all: Vec<u8> = (0..7).collect();
+    let user = env.user.insecure_clone();
+    let ix = env.mint_ix(&series, 100_000_000, &all);
+    env.send(&[ix], &[&user]).await.unwrap();
+    assert_eq!(
+        env.user_partial(&series, 4).await,
+        100_000_000,
+        "WAYMO balance"
+    );
+    env.assert_invariants(&series).await;
+
+    let acc = env
+        .ctx
+        .banks_client
+        .get_account(partial_pda(&series, 4))
+        .await
+        .unwrap()
+        .unwrap();
+    let mint = StateWithExtensions::<MintState>::unpack(&acc.data).unwrap();
+    assert_eq!(
+        mint.get_variable_len_extension::<TokenMetadata>()
+            .unwrap()
+            .symbol,
+        "WAYMO"
+    );
+
+    let ix = env.redeem_ix(&series, 100_000_000, &all);
+    env.send(&[ix], &[&user]).await.unwrap();
+    assert_eq!(env.series(&series).await.outstanding_sets, 0);
+    env.assert_invariants(&series).await;
+}
