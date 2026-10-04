@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Providers } from "@/components/Providers";
+import { LogoMark } from "@/components/Logo";
 import { WalletButton } from "@/components/WalletButton";
 import { NETWORK_LABEL } from "@/lib/config";
 import { DEMO } from "@/lib/demo";
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Providers>
           <header className="header">
             <Link href="/" className="brand">
+              <LogoMark size={26} />
               Segments
             </Link>
             <span className="badge">{DEMO ? "Demo" : NETWORK_LABEL}</span>
