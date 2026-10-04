@@ -2,13 +2,16 @@
 
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { formatAmount, formatBps } from "@/lib/amounts";
+import { useCallback, useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
+import { formatBps } from "@/lib/amounts";
 import { DEMO, DEMO_PARTIALS, DEMO_SERIES, demoBalances } from "@/lib/demo";
 import { errorMessage } from "@/lib/errors";
 import { fetchBalances, fetchPartials, fetchSeries, tradeUrl, type PartialInfo, type SeriesInfo } from "@/lib/segments";
 import { useProgram } from "@/lib/useSegments";
+import { AnimatedNumber } from "./AnimatedNumber";
 import { MintRedeem } from "./MintRedeem";
+
+const delay = (d: number) => ({ "--d": d }) as CSSProperties;
 
 export type Balances = Awaited<ReturnType<typeof fetchBalances>>;
 
@@ -59,8 +62,8 @@ export function SeriesView({ address }: { address: string }) {
   return (
     <>
       <section className="series-head">
-        <h1>Series {series.seriesId}</h1>
-        <p className="muted">
+        <h1 className="reveal">Series {series.seriesId}</h1>
+        <p className="muted reveal" style={delay(1)}>
           Underlying stock token {DEMO ? <strong>GOOGLx</strong> : <code>{series.underlyingMint.toBase58()}</code>}
           {series.metadataUri && (
             <>
@@ -71,8 +74,8 @@ export function SeriesView({ address }: { address: string }) {
             </>
           )}
         </p>
-        <div className="stats">
-          <Stat label="Sets outstanding" value={formatAmount(series.outstandingSets, d, 4)} />
+        <div className="stats reveal" style={delay(2)}>
+          <Stat label="Sets outstanding" value={<AnimatedNumber value={series.outstandingSets} decimals={d} maxFraction={4} />} />
           <Stat label="Mint fee" value={formatBps(series.mintFeeBps)} />
           <Stat label="Redeem fee" value={formatBps(series.redeemFeeBps)} />
         </div>
@@ -88,7 +91,7 @@ export function SeriesView({ address }: { address: string }) {
       </section>
 
       <div className="layout">
-        <section className="panel">
+        <section className="panel reveal" style={delay(3)}>
           <h2>Segments</h2>
           <table className="table">
             <thead>
@@ -101,13 +104,22 @@ export function SeriesView({ address }: { address: string }) {
             </thead>
             <tbody>
               {partials.map((p) => (
-                <tr key={p.mint.toBase58()}>
+                <tr key={p.mint.toBase58()} className="reveal" style={delay(4 + p.index * 0.5)}>
                   <td>
                     <strong>{p.symbol}</strong>
                     <div className="muted small">{p.name}</div>
                   </td>
-                  <td className="num">{formatBps(p.weightBps)}</td>
-                  {balances && <td className="num">{formatAmount(balances.partials[p.index], d, 4)}</td>}
+                  <td className="num">
+                    <span className="weight">
+                      <span className="weight-bar" style={{ "--w": p.weightBps / 10_000, ...delay(5 + p.index * 0.5) } as CSSProperties} />
+                      {formatBps(p.weightBps)}
+                    </span>
+                  </td>
+                  {balances && (
+                    <td className="num">
+                      <AnimatedNumber value={balances.partials[p.index]} decimals={d} maxFraction={4} />
+                    </td>
+                  )}
                   <td className="num">
                     {DEMO ? (
                       <span className="link-button disabled" title="Trading opens once pools exist">
@@ -135,7 +147,7 @@ export function SeriesView({ address }: { address: string }) {
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="stat">
       <div className="muted small">{label}</div>

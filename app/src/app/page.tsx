@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { formatAmount } from "@/lib/amounts";
 import { DEMO, DEMO_PARTIALS, DEMO_SERIES } from "@/lib/demo";
@@ -42,8 +42,8 @@ export default function Home() {
   return (
     <>
       <section className="hero">
-        <h1>Buy the part of a company you believe in.</h1>
-        <p>
+        <h1 className="reveal">Buy the part of a company you believe in.</h1>
+        <p className="reveal" style={{ "--d": 1 } as CSSProperties}>
           Deposit a tokenized stock and get one token for each of its business segments. Keep the segments you
           like, sell the rest, or put a full set back together to get the stock back at any time.
         </p>
@@ -52,12 +52,17 @@ export default function Home() {
       {!rows && !error && <p className="muted">Loading series…</p>}
       {rows && rows.length === 0 && <p className="muted">No series are live on this network yet.</p>}
       <div className="grid">
-        {rows?.map(({ series, partials }) => (
-          <Link key={series.address.toBase58()} href={`/series/${series.address.toBase58()}`} className="card">
+        {rows?.map(({ series, partials }, i) => (
+          <Link
+            key={series.address.toBase58()}
+            href={`/series/${series.address.toBase58()}`}
+            className="card reveal"
+            style={{ "--d": i + 2 } as CSSProperties}
+          >
             <h2>Series {series.seriesId}</h2>
             <div className="chips">
-              {partials.map((p) => (
-                <span key={p.symbol} className="chip">
+              {partials.map((p, j) => (
+                <span key={p.symbol} className="chip pop" style={{ "--d": i + 3 + j * 0.4 } as CSSProperties}>
                   {p.symbol}
                 </span>
               ))}

@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 // The Segments mark: a ring cut into equal segments, with one pulled out in the accent colour.
 // Source of truth for the PNG exports in /mnt/project-files/platform/logo.
 const SEGMENTS = [
@@ -9,11 +11,21 @@ const SEGMENTS = [
   { d: "M194.82 317.63 A372 372 0 0 1 502.26 140.13 L508.07 362.05 A150 150 0 0 0 384.10 433.63 Z", accent: false },
 ];
 
+// The accent segment sits 46px out from the ring; this is that offset, used to slide it into place.
+export const ACCENT_OFFSET = { x: 23.0, y: -39.8 };
+
 export function LogoMark({ size = 24 }: { size?: number }) {
   return (
-    <svg viewBox="0 0 1024 1024" width={size} height={size} aria-hidden="true" className="logo-mark">
+    <svg viewBox="0 0 1024 1024" width={size} height={size} aria-hidden="true" className="logo-mark"
+      style={{ "--ax": `${-ACCENT_OFFSET.x}px`, "--ay": `${-ACCENT_OFFSET.y}px` } as CSSProperties}>
       {SEGMENTS.map((s, i) => (
-        <path key={i} d={s.d} fill={s.accent ? "var(--accent)" : "currentColor"} />
+        <path
+          key={i}
+          d={s.d}
+          fill={s.accent ? "var(--accent)" : "currentColor"}
+          className={s.accent ? "logo-accent" : "logo-seg"}
+          style={{ "--i": i } as CSSProperties}
+        />
       ))}
     </svg>
   );

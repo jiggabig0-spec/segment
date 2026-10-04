@@ -1,7 +1,8 @@
 "use client";
 
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
+import { AnimatedNumber } from "./AnimatedNumber";
 import { formatAmount, mintPreview, parseAmount, redeemPreview } from "@/lib/amounts";
 import { RPC_URL } from "@/lib/config";
 import { DEMO, demoMint, demoRedeem } from "@/lib/demo";
@@ -89,8 +90,9 @@ export function MintRedeem({
   }
 
   return (
-    <section className="panel">
-      <div className="tabs">
+    <section className="panel reveal" style={{ "--d": 4 } as CSSProperties}>
+      <div className="tabs" data-mode={mode}>
+        <span className="tab-indicator" aria-hidden="true" />
         {(["mint", "redeem"] as const).map((m) => (
           <button
             key={m}
@@ -138,9 +140,13 @@ export function MintRedeem({
       {preview && (
         <dl className="preview">
           <dt>Fee</dt>
-          <dd>{formatAmount(preview.fee, d)}</dd>
+          <dd>
+            <AnimatedNumber value={preview.fee} decimals={d} />
+          </dd>
           <dt>{mode === "mint" ? "You get, of each segment" : "You get, in stock tokens"}</dt>
-          <dd>{formatAmount(preview.get, d)}</dd>
+          <dd>
+            <AnimatedNumber value={preview.get} decimals={d} />
+          </dd>
         </dl>
       )}
 
@@ -153,7 +159,7 @@ export function MintRedeem({
       )}
 
       {status && (
-        <p className={status.kind === "ok" ? "ok" : "error"}>
+        <p key={status.sig ?? status.text} className={status.kind === "ok" ? "ok status-in" : "error status-in"}>
           {status.text}{" "}
           {status.sig && (
             <a href={explorerUrl(status.sig, RPC_URL)} target="_blank" rel="noreferrer">
