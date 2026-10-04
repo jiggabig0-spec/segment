@@ -4,3 +4,8 @@ node_modules/
 test-ledger/
 *.so
 **/*-keypair.json
+app/.next/
+app/next-env.d.ts
+app/*.tsbuildinfo
+app/.env*.local
+app/out/
